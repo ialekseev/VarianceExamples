@@ -130,14 +130,14 @@ namespace VarianceExamples
             {
                 /*IAnimalFarm<Cat> catFarm = new CatFarm();
                 IAnimalFarm<Animal> animalFarm = catFarm; //NOT OK, because invariant
-                Animal animal = animalFarm.ProduceAnimal();*/
+                animalFarm.FeedAnimal(new Cat());                */
             }
 
             public static void Test2()
             {
                 /*IAnimalFarm<Animal> animalFarm = new AnimalFarm();
                 IAnimalFarm<Cat> catFarm = animalFarm; //NOT OK, because invariant
-                catFarm.FeedAnimal(new Cat());*/
+                Cat animal = catFarm.ProduceAnimal();*/
             }
         }
 
