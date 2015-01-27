@@ -5,9 +5,9 @@ namespace VarianceExamples
 {
     class Program
     {
-        public class Animal { }
-        public class Cat: Animal { }
-        public class Dog : Animal { }
+        class Animal { }
+        class Cat: Animal { }
+        class Dog : Animal { }
 
 
         class ArraysCovariance //example valid at compile-time, but fails at runtime

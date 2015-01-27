@@ -154,3 +154,9 @@ $RECYCLE.BIN/
 
 # Mac desktop service store files
 .DS_Store
+
+# Idea
+**/.idea/workspace.xml
+**/.idea/tasks.xml
+**/out
+
