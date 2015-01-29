@@ -36,15 +36,7 @@ namespace VarianceExamples
             {
                 T ProduceAnimal();
             }
-
-            class AnimalFarm : IAnimalFarm<Animal>
-            {
-                public Animal ProduceAnimal()
-                {
-                    return new Animal();
-                }
-            }
-            
+                        
             class CatFarm : IAnimalFarm<Cat> 
             {
                 public Cat ProduceAnimal()
@@ -75,15 +67,7 @@ namespace VarianceExamples
                     //feed animal
                 }
             }
-
-            class CatFarm : IAnimalFarm<Cat>
-            {
-                public void FeedAnimal(Cat animal)
-                {
-                    //feed cat
-                }
-            }
-
+            
             public static void Test()
             {
                 IAnimalFarm<Animal> animalFarm = new AnimalFarm();

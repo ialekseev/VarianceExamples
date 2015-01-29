@@ -6,7 +6,7 @@ class Dog extends Animal { }
 
 class ArraysCovariance //example valid at compile-time, but fails at runtime
 {
-    public static void Test()
+    public void test()
     {
         Cat[] cats = new Cat[] { new Cat(), new Cat() };
         Animal[] animals = cats;
@@ -16,7 +16,7 @@ class ArraysCovariance //example valid at compile-time, but fails at runtime
 
 class ArraysContravariance //example invalid at compile-time
 {
-    public static void Test()
+    public void test()
     {
         /*Animal[] animals = new Animal[] { new Cat(), new Cat() };
         Dog[] dogs = animals;
@@ -26,124 +26,108 @@ class ArraysContravariance //example invalid at compile-time
 
 class GenericsCovariance
 {
-    interface IAnimalFarm<T>
+    interface AnimalFarm<T>
     {
-        T ProduceAnimal();
+        T produceAnimal();
     }
 
-    class AnimalFarm implements IAnimalFarm<Animal>
+    class CatFarm implements AnimalFarm<Cat>
     {
-        public Animal ProduceAnimal()
-        {
-            return new Animal();
-        }
-    }
-
-    class CatFarm implements IAnimalFarm<Cat>
-    {
-        public Cat ProduceAnimal()
+        public Cat produceAnimal()
         {
             return new Cat();
         }
     }
 
-    public static void Test()
+    public void test()
     {
-        IAnimalFarm<Cat> catFarm = new GenericsCovariance().new CatFarm();
-        IAnimalFarm<? extends Animal> animalFarm = catFarm; //OK
-        Animal animal = animalFarm.ProduceAnimal();
+        AnimalFarm<Cat> catFarm = new CatFarm();
+        AnimalFarm<? extends Animal> animalFarm = catFarm; //OK
+        Animal animal = animalFarm.produceAnimal();
     }
 }
 
 class GenericsContravariance
 {
-    interface IAnimalFarm<T>
+    interface AnimalFarm<T>
     {
-        void FeedAnimal(T animal);
+        void feedAnimal(T animal);
     }
 
-    class AnimalFarm implements IAnimalFarm<Animal>
+    class AnimalFarmDefault implements AnimalFarm<Animal>
     {
-        public void FeedAnimal(Animal animal)
+        public void feedAnimal(Animal animal)
         {
             //feed animal
         }
     }
 
-    class CatFarm implements IAnimalFarm<Cat>
+    public void test()
     {
-        public void FeedAnimal(Cat animal)
-        {
-            //feed cat
-        }
-    }
-
-    public static void Test()
-    {
-        IAnimalFarm<Animal> animalFarm = new GenericsContravariance().new AnimalFarm();
-        IAnimalFarm<? super Animal> catFarm = animalFarm; //OK
-        catFarm.FeedAnimal(new Cat());
+        AnimalFarm<Animal> animalFarm = new AnimalFarmDefault();
+        AnimalFarm<? super Animal> catFarm = animalFarm; //OK
+        catFarm.feedAnimal(new Cat());
     }
 }
 
 class GenericsVariance //Generic type parameter is presented both in input & output positions
 {
-    interface IAnimalFarm<T>
+    interface AnimalFarm<T>
     {
-        T ProduceAnimal();
-        void FeedAnimal(T animal);
+        T produceAnimal();
+        void feedAnimal(T animal);
     }
 
-    class AnimalFarm implements IAnimalFarm<Animal>
+    class AnimalFarmDefault implements AnimalFarm<Animal>
     {
-        public Animal ProduceAnimal()
+        public Animal produceAnimal()
         {
             return new Animal();
         }
 
-        public void FeedAnimal(Animal animal)
+        public void feedAnimal(Animal animal)
         {
             //feed animal
         }
     }
 
-    class CatFarm implements IAnimalFarm<Cat>
+    class CatFarm implements AnimalFarm<Cat>
     {
-        public Cat ProduceAnimal()
+        public Cat produceAnimal()
         {
             return new Cat();
         }
 
-        public void FeedAnimal(Cat animal)
+        public void feedAnimal(Cat animal)
         {
             //feed cat
         }
     }
 
-    public static void Test1()
+    public void test1()
     {
-        IAnimalFarm<Cat> catFarm = new GenericsVariance().new CatFarm();
-        IAnimalFarm<? extends Animal> animalFarm = catFarm; //OK
-        Animal animal = animalFarm.ProduceAnimal();
+        AnimalFarm<Cat> catFarm = new CatFarm();
+        AnimalFarm<? extends Animal> animalFarm = catFarm; //OK
+        Animal animal = animalFarm.produceAnimal();
     }
 
-    public static void Test2()
+    public void test2()
     {
-        IAnimalFarm<Animal> animalFarm = new GenericsVariance().new AnimalFarm();
-        IAnimalFarm<? super Animal> catFarm = animalFarm; //OK
-        catFarm.FeedAnimal(new Cat());
+        AnimalFarm<Animal> animalFarm = new AnimalFarmDefault();
+        AnimalFarm<? super Animal> catFarm = animalFarm; //OK
+        catFarm.feedAnimal(new Cat());
     }
 }
 
 public class Main {
     public static void main(String[] args) {
-        ArraysCovariance.Test();
-        ArraysContravariance.Test();
+        new ArraysCovariance().test();
+        new ArraysContravariance().test();
 
-        GenericsCovariance.Test();
-        GenericsContravariance.Test();
+        new GenericsCovariance().test();
+        new GenericsContravariance().test();
 
-        GenericsVariance.Test1();
-        GenericsVariance.Test2();
+        new GenericsVariance().test1();
+        new GenericsVariance().test2();
     }
 }
