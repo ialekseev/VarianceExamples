@@ -2,22 +2,22 @@ class Animal { }
 class Cat extends Animal { }
 class Dog extends Animal { }
 
-class ArraysCovariance //example valid at compile-time, but fails at runtime
+class ArraysCovariance //valid at compile-time, but fails at runtime
 {
     public void test()
     {
         Cat[] cats = new Cat[] { new Cat(), new Cat() };
         Animal[] animals = cats;
-        animals[0] = new Dog();
+        animals[0] = new Dog(); //runtime error here
     }
 }
 
-class ArraysContravariance //example invalid at compile-time
+class ArraysContravariance //invalid at compile-time
 {
     public void test()
     {
         /*Animal[] animals = new Animal[] { new Cat(), new Cat() };
-        Dog[] dogs = animals;
+        Dog[] dogs = animals; //compile-time error here
         dogs[0] = new Dog();*/
     }
 }
