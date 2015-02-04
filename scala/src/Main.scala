@@ -7,25 +7,25 @@ object Main {
   class Dog extends Animal
 
 
-  class ArraysCovariance //example invalid at compile-time
+  class ArraysCovariance //invalid at compile-time
   {
     def test() ={
       /*val cats: Array[Cat] = Array[Cat](new Cat(), new Cat())
-      val animals: Array[Animal] = cats;
+      val animals: Array[Animal] = cats; //invalid
       animals.update(0,  new Dog())*/
     }
   }
 
-  class ArraysContravariance //example invalid at compile-time
+  class ArraysContravariance //invalid at compile-time
   {
     def test() ={
       /*val animals: Array[Animal] = Array[Animal](new Cat(), new Cat());
-      val dogs: Array[Dog] = animals;
+      val dogs: Array[Dog] = animals; //invalid
       dogs(0) = new Dog();*/
     }
   }
 
-  class ListsCovariance
+  class ImmutableListsCovariance
   {
     def test() = {
       val cats:List[Cat] = List[Cat](new Cat(), new Cat())
@@ -34,32 +34,59 @@ object Main {
     }
   }
 
+  class MutableListsCovariance //invalid at compile-time
+  {
+    def test() = {
+      /*val cats:scala.collection.mutable.ListBuffer[Cat] = scala.collection.mutable.ListBuffer[Cat](new Cat(), new Cat())
+      val animals:scala.collection.mutable.ListBuffer[Animal] = cats //invalid
+      animals.update(0, new Dog())*/
+    }
+  }
+
   class GenericsInvariance //example invalid at compile-time
   {
-    class AnimalFarm[T]{
+    trait AnimalFarm[T]
+    {
+      def produceAnimal(): T
+      def feedAnimal(animal: T): Unit
+    }
+
+    class AnimalFarmDefault extends AnimalFarm[Animal]{
+      def produceAnimal(): Animal = new Animal()
+      def feedAnimal(animal: Animal): Unit = {
+        //feed animal
+      }
+    }
+
+    class CatFarm extends AnimalFarm[Cat]{
       def produceAnimal(): Cat = new Cat()
-      def feedAnimal[T](animal: T): AnimalFarm[T] = new AnimalFarm[T]
+      def feedAnimal(animal: Cat): Unit = {
+        //feed animal
+      }
     }
 
     def test()={
-      /*val catFarm:AnimalFarm[Cat] = new AnimalFarm[Cat]
+      /*val catFarm:AnimalFarm[Cat] = new CatFarm()
       val animalFarm: AnimalFarm[Animal] = catFarm //invalid
-      animalFarm.produceAnimal()*/
+      val animal: Animal = animalFarm.produceAnimal()*/
     }
   }
 
   class GenericsCovariance
   {
-    class AnimalFarm[+T]{
+    trait AnimalFarm[+T]
+    {
+      def produceAnimal(): T
+    }
+
+    class CatFarm extends AnimalFarm[Cat]{
       def produceAnimal(): Cat = new Cat()
-      def feedAnimal[S>:T](animal: S): AnimalFarm[S] = new AnimalFarm[S]
     }
 
     def test() = {
-      val catFarm:AnimalFarm[Cat] = new AnimalFarm[Cat]
-      val animalFarm: AnimalFarm[Animal] = catFarm //OK, because covariant
-      animalFarm.produceAnimal()
-      val satiatedAnimal = animalFarm.feedAnimal(new Dog()) //still OK!
+      val catFarm:AnimalFarm[Cat] = new CatFarm()
+      val animalFarm: AnimalFarm[Animal] = catFarm //OK
+      val animal: Animal = animalFarm.produceAnimal()
     }
   }
 
@@ -67,27 +94,28 @@ object Main {
   {
     trait AnimalFarm[-T]
     {
-      def feedAnimal(animal: T)
+      def feedAnimal(animal: T): Unit
     }
 
-    class AnimalFarmDefault extends AnimalFarm[Animal]{
-      def feedAnimal(animal: Animal): Unit ={
+    class AnimalFarmDefault extends AnimalFarm[Animal]
+    {
+      def feedAnimal(animal: Animal): Unit = {
         //feed animal
       }
     }
 
     def test() = {
       val animalFarm:AnimalFarm[Animal] = new AnimalFarmDefault()
-      val catFarm: AnimalFarm[Cat] = animalFarm
+      val catFarm: AnimalFarm[Cat] = animalFarm //OK
       catFarm.feedAnimal(new Cat())
     }
   }
 
-
   def main(args: Array[String]) {
     new ArraysCovariance().test()
     new ArraysContravariance().test()
-    new ListsCovariance().test()
+    new ImmutableListsCovariance().test()
+    new GenericsInvariance().test()
     new GenericsCovariance().test()
     new GenericsContravariance().test()
   }
