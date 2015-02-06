@@ -111,12 +111,43 @@ object Main {
     }
   }
 
+  class GenericsCovarianceWithLowerBound
+  {
+    trait AnimalFarm[+T]
+    {
+      def produceAnimal(): T
+      def feedAnimal[S>:T](animal: S): Unit
+    }
+
+    class AnimalFarmDefault extends AnimalFarm[Animal]{
+      def produceAnimal(): Animal = new Animal()
+      def feedAnimal[S >: Animal](animal: S): Unit = {
+        //feed animal
+      }
+    }
+
+    class CatFarm extends AnimalFarm[Cat]{
+      def produceAnimal(): Cat = new Cat()
+      def feedAnimal[S >: Cat](animal: S): Unit = {
+        //feed animal
+      }
+    }
+
+    def test()={
+      val catFarm:AnimalFarm[Cat] = new CatFarm()
+      val animalFarm: AnimalFarm[Animal] = catFarm //OK
+      val animal: Animal = animalFarm.produceAnimal()
+      animalFarm.feedAnimal(new Dog) //still OK!
+    }
+  }
+
   def main(args: Array[String]) {
     new ArraysCovariance().test()
     new ArraysContravariance().test()
     new ImmutableListsCovariance().test()
     new GenericsInvariance().test()
     new GenericsCovariance().test()
+    new GenericsCovarianceWithLowerBound().test()
     new GenericsContravariance().test()
   }
 }
