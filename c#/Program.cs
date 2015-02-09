@@ -10,7 +10,7 @@ namespace VarianceExamples
         class Dog : Animal { }
 
 
-        class ArraysCovariance //example valid at compile-time, but fails at runtime
+        class ArraysCovariance //valid at compile-time, but fails at runtime
         {
             public static void Test() 
             {
@@ -20,7 +20,7 @@ namespace VarianceExamples
             }
         }
 
-        class ArraysContravariance //example invalid at compile-time
+        class ArraysContravariance //invalid at compile-time
         {
             public static void Test()
             {                                
@@ -76,7 +76,7 @@ namespace VarianceExamples
             }
         }
 
-        class GenericsInvariance //example invalid at compile-time
+        class GenericsInvariance //invalid at compile-time
         {
             interface IAnimalFarm<T> where T : Animal
             {
@@ -114,7 +114,7 @@ namespace VarianceExamples
             {
                 /*IAnimalFarm<Cat> catFarm = new CatFarm();
                 IAnimalFarm<Animal> animalFarm = catFarm; //NOT OK, because invariant
-                animalFarm.FeedAnimal(new Cat());                */
+                animalFarm.FeedAnimal(new Cat());*/
             }
 
             public static void Test2()
@@ -122,6 +122,29 @@ namespace VarianceExamples
                 /*IAnimalFarm<Animal> animalFarm = new AnimalFarm();
                 IAnimalFarm<Cat> catFarm = animalFarm; //NOT OK, because invariant
                 Cat animal = catFarm.ProduceAnimal();*/
+            }
+        }
+
+        class ReturnTypeCovariance //invalid at compile-time
+        {
+            class AnimalFarm
+            {
+                public virtual Animal ProduceAnimal()
+                {
+                    return new Animal();
+                }
+            }
+
+            class CatFarm: AnimalFarm
+            {
+                /*public override Cat ProduceAnimal()
+                {
+                    return new Cat();
+                }*/
+            }
+
+            public static void Test()
+            {                
             }
         }
 
@@ -134,6 +157,8 @@ namespace VarianceExamples
             GenericsContravariance.Test();            
             GenericsInvariance.Test1();
             GenericsInvariance.Test2();
+            
+            ReturnTypeCovariance.Test();
         }
     }
 }
