@@ -141,13 +141,37 @@ object Main {
     }
   }
 
+  class ReturnTypeCovariance
+  {
+    class AnimalFarm
+    {
+       def produceAnimal(): Animal = new Animal();
+    }
+
+    class CatFarm extends AnimalFarm
+    {
+      override def produceAnimal(): Cat = new Cat();
+    }
+
+    def test()
+    {
+      val catFarm: CatFarm = new CatFarm();
+      val cat: Cat = catFarm.produceAnimal();
+    }
+  }
+
+
   def main(args: Array[String]) {
     new ArraysCovariance().test()
     new ArraysContravariance().test()
+
     new ImmutableListsCovariance().test()
+
     new GenericsInvariance().test()
     new GenericsCovariance().test()
     new GenericsCovarianceWithLowerBound().test()
     new GenericsContravariance().test()
+
+    new ReturnTypeCovariance().test();
   }
 }

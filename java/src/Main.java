@@ -117,6 +117,31 @@ class GenericsVariance //Generic type parameter is presented both in input & out
     }
 }
 
+class ReturnTypeCovariance //invalid at compile-time
+{
+    class AnimalFarm
+    {
+        public Animal produceAnimal()
+        {
+            return new Animal();
+        }
+    }
+
+    class CatFarm extends AnimalFarm
+    {
+         public Cat produceAnimal()
+         {
+             return new Cat();
+         }
+    }
+
+    public void test()
+    {
+        CatFarm catFarm = new CatFarm();
+        Cat cat = catFarm.produceAnimal();
+    }
+}
+
 public class Main {
     public static void main(String[] args) {
         new ArraysCovariance().test();
@@ -127,5 +152,7 @@ public class Main {
 
         new GenericsVariance().test1();
         new GenericsVariance().test2();
+
+        new ReturnTypeCovariance().test();
     }
 }
