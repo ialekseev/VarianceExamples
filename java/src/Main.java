@@ -63,7 +63,7 @@ class GenericsContravariance
     public void test()
     {
         AnimalFarm<Animal> animalFarm = new AnimalFarmDefault();
-        AnimalFarm<? super Animal> catFarm = animalFarm; //OK
+        AnimalFarm<? super Cat> catFarm = animalFarm; //OK
         catFarm.feedAnimal(new Cat());
     }
 }
@@ -112,7 +112,7 @@ class GenericsVariance //Generic type parameter is presented both in input & out
     public void test2()
     {
         AnimalFarm<Animal> animalFarm = new AnimalFarmDefault();
-        AnimalFarm<? super Animal> catFarm = animalFarm; //OK
+        AnimalFarm<? super Cat> catFarm = animalFarm; //OK
         catFarm.feedAnimal(new Cat());
     }
 }
