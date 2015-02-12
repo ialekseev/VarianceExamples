@@ -43,7 +43,7 @@ object Main {
     }
   }
 
-  class GenericsInvariance //example invalid at compile-time
+  class GenericsInvariance //invalid at compile-time
   {
     trait AnimalFarm[T]
     {
@@ -155,11 +155,29 @@ object Main {
 
     def test()
     {
-      val catFarm: CatFarm = new CatFarm();
-      val cat: Cat = catFarm.produceAnimal();
+      val catFarm: CatFarm = new CatFarm()
+      val cat: Cat = catFarm.produceAnimal()
     }
   }
 
+  class ParameterTypeContravariance //invalid at compile-time
+  {
+      class AnimalFarm
+      {
+         def feedAnimal(animal: Cat)= {
+         }
+      }
+
+      class CatFarm extends AnimalFarm
+      {
+         /*override def feedAnimal(animal: Animal)={
+         }*/
+      }
+
+      def test()
+      {
+      }
+  }
 
   def main(args: Array[String]) {
     new ArraysCovariance().test()
@@ -172,6 +190,8 @@ object Main {
     new GenericsCovarianceWithLowerBound().test()
     new GenericsContravariance().test()
 
-    new ReturnTypeCovariance().test();
+    new ReturnTypeCovariance().test()
+
+    new ParameterTypeContravariance().test()
   }
 }

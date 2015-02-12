@@ -129,7 +129,8 @@ class ReturnTypeCovariance //invalid at compile-time
 
     class CatFarm extends AnimalFarm
     {
-         public Cat produceAnimal()
+        @Override
+        public Cat produceAnimal()
          {
              return new Cat();
          }
@@ -139,6 +140,28 @@ class ReturnTypeCovariance //invalid at compile-time
     {
         CatFarm catFarm = new CatFarm();
         Cat cat = catFarm.produceAnimal();
+    }
+}
+
+class ParameterTypeContravariance
+{
+    class AnimalFarm
+    {
+        public void feedAnimal(Cat animal)
+        {
+        }
+    }
+
+    class CatFarm extends AnimalFarm
+    {
+        /*@Override
+        public void feedAnimal(Animal animal)
+        {
+        }*/
+    }
+
+    public void test()
+    {
     }
 }
 
@@ -154,5 +177,7 @@ public class Main {
         new GenericsVariance().test2();
 
         new ReturnTypeCovariance().test();
+
+        new ParameterTypeContravariance().test();
     }
 }

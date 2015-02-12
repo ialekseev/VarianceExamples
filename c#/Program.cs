@@ -148,6 +148,27 @@ namespace VarianceExamples
             }
         }
 
+        class ParameterTypeContravariance //invalid at compile-time
+        {
+            class AnimalFarm
+            {
+                public virtual void FeedAnimal(Cat animal)
+                {                    
+                }
+            }
+
+            class CatFarm : AnimalFarm
+            {
+                /*public override void FeedAnimal(Animal animal)
+                {                    
+                }*/
+            }
+
+            public static void Test()
+            {
+            }
+        }
+
         static void Main(string[] args)
         {
             ArraysCovariance.Test();
@@ -159,6 +180,8 @@ namespace VarianceExamples
             GenericsInvariance.Test2();
             
             ReturnTypeCovariance.Test();
+            
+            ParameterTypeContravariance.Test();
         }
     }
 }
