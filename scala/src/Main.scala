@@ -11,7 +11,7 @@ object Main {
   {
     def test() ={
       /*val cats: Array[Cat] = Array[Cat](new Cat(), new Cat())
-      val animals: Array[Animal] = cats; //invalid
+      val animals: Array[Animal] = cats //invalid
       animals.update(0,  new Dog())*/
     }
   }
