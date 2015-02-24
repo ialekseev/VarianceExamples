@@ -141,6 +141,45 @@ object Main {
     }
   }
 
+  class GenericsExistentialTypesVaraince
+  {
+    //think of Java's wildcards
+
+    trait AnimalFarm[T]
+    {
+      def produceAnimal(): T
+      def feedAnimal(animal: T): Unit
+    }
+
+    class AnimalFarmDefault extends AnimalFarm[Animal]{
+      def produceAnimal(): Animal = new Animal()
+      def feedAnimal(animal: Animal): Unit = {
+        //feed animal
+      }
+    }
+
+    class CatFarm extends AnimalFarm[Cat]{
+      def produceAnimal(): Cat = new Cat()
+      def feedAnimal(animal: Cat): Unit = {
+        //feed animal
+      }
+    }
+
+    def test1() = {
+      val catFarm:AnimalFarm[Cat] = new CatFarm()
+      val animalFarm: AnimalFarm[_<:Animal] = catFarm //OK, covariant
+      val animal: Animal = animalFarm.produceAnimal()
+      //animalFarm.feedAnimal(new Animal()) //invalid at compile-time
+    }
+
+    def test2() = {
+      val animalFarm:AnimalFarm[Animal] = new AnimalFarmDefault()
+      val catFarm: AnimalFarm[_>:Cat] = animalFarm //OK, contravariant
+      catFarm.feedAnimal(new Cat())
+      //val cat: Cat = catFarm.produceAnimal() //invalid at compile-time
+    }
+  }
+
   class ReturnTypeCovariance
   {
     class AnimalFarm
@@ -174,9 +213,7 @@ object Main {
          }*/
       }
 
-      def test()
-      {
-      }
+      def test() = {}
   }
 
   def main(args: Array[String]) {
@@ -187,8 +224,10 @@ object Main {
 
     new GenericsInvariance().test()
     new GenericsCovariance().test()
-    new GenericsCovarianceWithLowerBound().test()
     new GenericsContravariance().test()
+    new GenericsCovarianceWithLowerBound().test()
+    new GenericsExistentialTypesVaraince().test1()
+    new GenericsExistentialTypesVaraince().test2()
 
     new ReturnTypeCovariance().test()
 
