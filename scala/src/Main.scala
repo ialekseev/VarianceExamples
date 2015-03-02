@@ -43,35 +43,6 @@ object Main {
     }
   }
 
-  class GenericsInvariance //invalid at compile-time
-  {
-    trait AnimalFarm[T]
-    {
-      def produceAnimal(): T
-      def feedAnimal(animal: T): Unit
-    }
-
-    class AnimalFarmDefault extends AnimalFarm[Animal]{
-      def produceAnimal(): Animal = new Animal()
-      def feedAnimal(animal: Animal): Unit = {
-        //feed animal
-      }
-    }
-
-    class CatFarm extends AnimalFarm[Cat]{
-      def produceAnimal(): Cat = new Cat()
-      def feedAnimal(animal: Cat): Unit = {
-        //feed animal
-      }
-    }
-
-    def test()={
-      /*val catFarm:AnimalFarm[Cat] = new CatFarm()
-      val animalFarm: AnimalFarm[Animal] = catFarm //invalid
-      val animal: Animal = animalFarm.produceAnimal()*/
-    }
-  }
-
   class GenericsCovariance
   {
     trait AnimalFarm[+T]
@@ -111,6 +82,36 @@ object Main {
     }
   }
 
+  class GenericsVariance //invalid at compile-time
+  {
+    //Generic type parameter is presented both in input & output positions
+    trait AnimalFarm[T]
+    {
+      def produceAnimal(): T
+      def feedAnimal(animal: T): Unit
+    }
+
+    class AnimalFarmDefault extends AnimalFarm[Animal]{
+      def produceAnimal(): Animal = new Animal()
+      def feedAnimal(animal: Animal): Unit = {
+        //feed animal
+      }
+    }
+
+    class CatFarm extends AnimalFarm[Cat]{
+      def produceAnimal(): Cat = new Cat()
+      def feedAnimal(animal: Cat): Unit = {
+        //feed animal
+      }
+    }
+
+    def test()={
+      /*val catFarm:AnimalFarm[Cat] = new CatFarm()
+      val animalFarm: AnimalFarm[Animal] = catFarm //invalid
+      val animal: Animal = animalFarm.produceAnimal()*/
+    }
+  }
+
   class GenericsCovarianceWithLowerBound
   {
     trait AnimalFarm[+T]
@@ -141,7 +142,7 @@ object Main {
     }
   }
 
-  class GenericsExistentialTypesVaraince
+  class GenericsExistentialTypesVariance
   {
     //think of Java's wildcards
 
@@ -222,12 +223,14 @@ object Main {
 
     new ImmutableListsCovariance().test()
 
-    new GenericsInvariance().test()
+    new MutableListsCovariance().test()
+
     new GenericsCovariance().test()
     new GenericsContravariance().test()
+    new GenericsVariance().test()
     new GenericsCovarianceWithLowerBound().test()
-    new GenericsExistentialTypesVaraince().test1()
-    new GenericsExistentialTypesVaraince().test2()
+    new GenericsExistentialTypesVariance().test1()
+    new GenericsExistentialTypesVariance().test2()
 
     new ReturnTypeCovariance().test()
 

@@ -68,8 +68,9 @@ class GenericsContravariance
     }
 }
 
-class GenericsVariance //Generic type parameter is presented both in input & output positions
+class GenericsVariance
 {
+    //Generic type parameter is presented both in input & output positions
     interface AnimalFarm<T>
     {
         T produceAnimal();
@@ -117,7 +118,7 @@ class GenericsVariance //Generic type parameter is presented both in input & out
     }
 }
 
-class ReturnTypeCovariance //invalid at compile-time
+class ReturnTypeCovariance
 {
     class AnimalFarm
     {
@@ -143,7 +144,7 @@ class ReturnTypeCovariance //invalid at compile-time
     }
 }
 
-class ParameterTypeContravariance
+class ParameterTypeContravariance //invalid at compile-time
 {
     class AnimalFarm
     {

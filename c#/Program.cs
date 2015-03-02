@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace VarianceExamples
+﻿namespace VarianceExamples
 {
     class Program
     {
@@ -16,7 +13,7 @@ namespace VarianceExamples
             {
                 Cat[] cats = new Cat[] { new Cat(), new Cat() };
                 Animal[] animals = cats;
-                animals[0] = new Dog();
+                animals[0] = new Dog(); //runtime error here
             }
         }
 
@@ -48,7 +45,7 @@ namespace VarianceExamples
             public static void Test()
             {
                 IAnimalFarm<Cat> catFarm = new CatFarm();
-                IAnimalFarm<Animal> animalFarm = catFarm; //OK, because covariant
+                IAnimalFarm<Animal> animalFarm = catFarm; //OK
                 Animal animal = animalFarm.ProduceAnimal();
             }
         }
@@ -71,13 +68,14 @@ namespace VarianceExamples
             public static void Test()
             {
                 IAnimalFarm<Animal> animalFarm = new AnimalFarm();
-                IAnimalFarm<Cat> catFarm = animalFarm; //OK, because contravariant
+                IAnimalFarm<Cat> catFarm = animalFarm; //OK
                 catFarm.FeedAnimal(new Cat()); 
             }
         }
 
-        class GenericsInvariance //invalid at compile-time
+        class GenericsVariance //invalid at compile-time
         {
+            //Generic type parameter is presented both in input & output positions
             interface IAnimalFarm<T> where T : Animal
             {
                 T ProduceAnimal();
@@ -113,14 +111,14 @@ namespace VarianceExamples
             public static void Test1()
             {
                 /*IAnimalFarm<Cat> catFarm = new CatFarm();
-                IAnimalFarm<Animal> animalFarm = catFarm; //NOT OK, because invariant
+                IAnimalFarm<Animal> animalFarm = catFarm; //invalid
                 animalFarm.FeedAnimal(new Cat());*/
             }
 
             public static void Test2()
             {
                 /*IAnimalFarm<Animal> animalFarm = new AnimalFarm();
-                IAnimalFarm<Cat> catFarm = animalFarm; //NOT OK, because invariant
+                IAnimalFarm<Cat> catFarm = animalFarm; //invalid
                 Cat animal = catFarm.ProduceAnimal();*/
             }
         }
@@ -176,8 +174,8 @@ namespace VarianceExamples
             
             GenericsCovariance.Test();
             GenericsContravariance.Test();            
-            GenericsInvariance.Test1();
-            GenericsInvariance.Test2();
+            GenericsVariance.Test1();
+            GenericsVariance.Test2();
             
             ReturnTypeCovariance.Test();
             
